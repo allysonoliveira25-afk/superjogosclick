@@ -8,7 +8,13 @@ import CategoryIcon from "./CategoryIcon";
 import AvatarPreview from "./AvatarPreview";
 import type { Category } from "@/lib/types";
 
-export default function Header({ categories }: { categories: Category[] }) {
+export default function Header({
+  categories,
+  siteName = "SuperJogosClick",
+}: {
+  categories: Category[];
+  siteName?: string;
+}) {
   const { user, profile, logout } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -34,7 +40,7 @@ export default function Header({ categories }: { categories: Category[] }) {
             SJ
           </span>
           <span className="hidden font-heading text-lg font-extrabold tracking-tight text-foreground sm:block">
-            Super<span className="text-brand">Jogos</span>Click
+            {siteName}
           </span>
         </Link>
 

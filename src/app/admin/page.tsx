@@ -69,6 +69,16 @@ export default function AdminDashboard() {
           <p className="mt-1 font-bold">Categorias</p>
           <p className="text-xs text-muted">Criar categorias personalizadas</p>
         </Link>
+        <Link href="/admin/paginas/nova" className="rounded-2xl bg-surface p-4 shadow hover:-translate-y-0.5">
+          <p className="text-2xl">📄</p>
+          <p className="mt-1 font-bold">Criar página</p>
+          <p className="text-xs text-muted">Contato, privacidade, etc.</p>
+        </Link>
+        <Link href="/admin/configuracoes" className="rounded-2xl bg-surface p-4 shadow hover:-translate-y-0.5">
+          <p className="text-2xl">⚙️</p>
+          <p className="mt-1 font-bold">Configurações</p>
+          <p className="text-xs text-muted">Nome, contato, manutenção</p>
+        </Link>
       </div>
     </div>
   );

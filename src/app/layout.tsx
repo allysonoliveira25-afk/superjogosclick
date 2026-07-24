@@ -4,24 +4,29 @@ import "./globals.css";
 import { AuthProvider } from "@/lib/auth-context";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import MaintenanceGate from "@/components/MaintenanceGate";
 import { getAllCategories } from "@/lib/categories";
-import type { Category } from "@/lib/types";
+import { getSiteSettings } from "@/lib/settings";
+import { getAllPages } from "@/lib/pages";
+import { DEFAULT_SITE_SETTINGS, type Category, type CustomPage, type SiteSettings } from "@/lib/types";
 
 const baloo = Baloo_2({ variable: "--font-baloo", subsets: ["latin"], weight: ["600", "700", "800"] });
 const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "SuperJogosClick — Jogos online grátis",
-  description:
-    "Jogue centenas de jogos online grátis no navegador: ação, aventura, puzzle, corrida e muito mais, com classificação indicativa em cada jogo.",
-};
-
-async function safeGetCategories(): Promise<Category[]> {
+async function safe<T>(promise: Promise<T>, fallback: T): Promise<T> {
   try {
-    return await getAllCategories();
+    return await promise;
   } catch {
-    return [];
+    return fallback;
   }
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await safe(getSiteSettings(), DEFAULT_SITE_SETTINGS);
+  return {
+    title: `${settings.siteName} — Jogos online grátis`,
+    description: settings.description,
+  };
 }
 
 export default async function RootLayout({
@@ -29,15 +34,21 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const categories = await safeGetCategories();
+  const [categories, settings, pages] = await Promise.all([
+    safe<Category[]>(getAllCategories(), []),
+    safe<SiteSettings>(getSiteSettings(), DEFAULT_SITE_SETTINGS),
+    safe<CustomPage[]>(getAllPages(), []),
+  ]);
 
   return (
     <html lang="pt-BR" className={`${baloo.variable} ${nunito.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col bg-background text-foreground">
         <AuthProvider>
-          <Header categories={categories} />
-          <main className="flex-1">{children}</main>
-          <Footer />
+          <Header categories={categories} siteName={settings.siteName} />
+          <main className="flex-1">
+            <MaintenanceGate settings={settings}>{children}</MaintenanceGate>
+          </main>
+          <Footer settings={settings} pages={pages.filter((p) => p.showInFooter)} />
         </AuthProvider>
       </body>
     </html>

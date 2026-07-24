@@ -96,3 +96,41 @@ export interface HistoryEntry {
   totalSeconds: number;
   playCount: number;
 }
+
+export interface SiteSocialLinks {
+  instagram: string;
+  youtube: string;
+  tiktok: string;
+  facebook: string;
+}
+
+export interface SiteSettings {
+  siteName: string;
+  description: string;
+  contactEmail: string;
+  footerText: string;
+  social: SiteSocialLinks;
+  maintenanceMode: boolean;
+  maintenanceMessage: string;
+}
+
+export const DEFAULT_SITE_SETTINGS: SiteSettings = {
+  siteName: "SuperJogosClick",
+  description:
+    "Jogue centenas de jogos online grátis no navegador: ação, aventura, puzzle, corrida e muito mais.",
+  contactEmail: "",
+  footerText: "Todos os jogos pertencem aos seus respectivos criadores.",
+  social: { instagram: "", youtube: "", tiktok: "", facebook: "" },
+  maintenanceMode: false,
+  maintenanceMessage: "Estamos fazendo uma manutenção rápida. Voltamos já!",
+};
+
+export interface CustomPage {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  showInFooter: boolean;
+  createdAt: number;
+  updatedAt: number;
+}
