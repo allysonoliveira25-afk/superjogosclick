@@ -1,12 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f4f1fb;
+  /* Turquoise "mosaic" background — the signature Poki look, visible in
+     the gaps between game thumbnails in the grid. */
+  --background: #2ad6c9;
   --surface: #ffffff;
   --foreground: #241b3d;
   --muted: #6f6690;
 
-  --brand: #7c4dff;
+  --brand: #7c3aed;
   --brand-dark: #5c2fe0;
   --accent-orange: #ff7a1a;
   --accent-yellow: #ffce29;

@@ -71,7 +71,7 @@ export default function PerfilPage() {
   }
 
   if (loading || !profile || !avatar) {
-    return <p className="p-10 text-center text-muted">Carregando perfil...</p>;
+    return <p className="p-10 text-center font-semibold text-white/80">Carregando perfil...</p>;
   }
 
   const points = playtimePoints(profile.totalPlaytimeSeconds);
@@ -79,7 +79,7 @@ export default function PerfilPage() {
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
-      <h1 className="font-heading text-3xl font-extrabold text-brand-dark">
+      <h1 className="font-heading text-3xl font-extrabold text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.15)]">
         Meu perfil
       </h1>
 

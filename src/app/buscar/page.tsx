@@ -25,16 +25,16 @@ function SearchResults() {
   }, [q]);
 
   return (
-    <div className="mx-auto max-w-[1400px] px-4 py-6">
-      <h1 className="font-heading text-2xl font-extrabold text-brand-dark">
+    <div className="mx-auto max-w-[1400px] px-3 py-5 sm:px-5">
+      <h1 className="font-heading text-2xl font-extrabold text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.15)]">
         Resultados para &quot;{q}&quot;
       </h1>
       {games === null ? (
-        <p className="mt-6 text-muted">Buscando...</p>
+        <p className="mt-6 font-semibold text-white/80">Buscando...</p>
       ) : games.length === 0 ? (
-        <p className="mt-6 text-muted">Nenhum jogo encontrado.</p>
+        <p className="mt-6 font-semibold text-white/80">Nenhum jogo encontrado.</p>
       ) : (
-        <div className="mt-6 grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+        <div className="mt-5 grid grid-cols-[repeat(auto-fill,minmax(120px,1fr))] gap-2">
           {games.map((g) => (
             <GameCard key={g.id} game={g} />
           ))}

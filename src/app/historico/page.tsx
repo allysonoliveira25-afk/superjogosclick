@@ -35,13 +35,13 @@ export default function HistoricoPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-8">
-      <h1 className="font-heading text-3xl font-extrabold text-brand-dark">
+      <h1 className="font-heading text-3xl font-extrabold text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.15)]">
         🕑 Histórico de jogos
       </h1>
       {rows === null ? (
-        <p className="mt-6 text-muted">Carregando...</p>
+        <p className="mt-6 font-semibold text-white/80">Carregando...</p>
       ) : rows.length === 0 ? (
-        <p className="mt-6 text-muted">Você ainda não jogou nenhum jogo.</p>
+        <p className="mt-6 font-semibold text-white/80">Você ainda não jogou nenhum jogo.</p>
       ) : (
         <div className="mt-6 flex flex-col gap-2">
           {rows.map(({ entry, game }) => (
