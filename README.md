@@ -1,7 +1,7 @@
 # SuperJogosClick
 
 Plataforma de jogos online no estilo Poki/Friv, construída com **Next.js 16 (App Router)**,
-**TypeScript**, **Tailwind CSS v4** e **Firebase** (Auth + Firestore + Storage).
+**TypeScript**, **Tailwind CSS v4** e **Firebase** (Auth + Realtime Database + Storage).
 
 ## Funcionalidades
 
@@ -17,10 +17,14 @@ Plataforma de jogos online no estilo Poki/Friv, construída com **Next.js 16 (Ap
 
 1. Crie um projeto no [Firebase Console](https://console.firebase.google.com/) e ative:
    - **Authentication** → método E-mail/senha
-   - **Firestore Database**
+   - **Realtime Database** (não confunda com o Firestore — o projeto usa o Realtime Database)
    - **Storage** (opcional, para uploads futuros)
-2. Copie `.env.example` para `.env.local` e preencha com as credenciais do seu app web do Firebase.
-3. Publique as regras de segurança em `firestore.rules` (Firebase Console → Firestore → Regras, ou via `firebase deploy --only firestore:rules` com o Firebase CLI).
+2. Copie `.env.example` para `.env.local` e preencha com as credenciais do seu app web do
+   Firebase, incluindo o `NEXT_PUBLIC_FIREBASE_DATABASE_URL` (aparece no topo da página do
+   Realtime Database no console, algo como `https://seu-projeto-default-rtdb.firebaseio.com`
+   ou com um sufixo de região, tipo `...-default-rtdb.southamerica-east1.firebasedatabase.app`).
+3. Publique as regras de segurança em `database.rules.json` (Firebase Console → Realtime
+   Database → Regras, cole o conteúdo do arquivo e publique).
 4. Instale as dependências e rode o servidor:
 
    ```sh
@@ -29,7 +33,7 @@ Plataforma de jogos online no estilo Poki/Friv, construída com **Next.js 16 (Ap
    ```
 
 5. Crie sua conta pelo site (`/cadastro`). Por padrão todo novo usuário nasce com `role: "user"`.
-   Para virar administrador, abra o Firestore Console → coleção `users` → seu documento →
+   Para virar administrador, abra o Realtime Database Console → nó `users/<seu uid>` →
    altere o campo `role` para `admin`. A partir daí você acessa `/admin`.
 6. Em `/admin/categorias`, clique em **"Criar categorias padrão"** para popular as categorias
    iniciais (Ação, Aventura, Puzzle, Corrida, Esportes, Tiro, Estratégia, Casual, Raciocínio).
@@ -68,7 +72,7 @@ src/
   app/            rotas (App Router)
   components/     componentes de UI reutilizáveis
   components/admin/  formulários usados só no painel admin
-  lib/            acesso a dados (Firestore), auth, tipos, import de feeds
+  lib/            acesso a dados (Realtime Database), auth, tipos, import de feeds
 ```
 
 ## Scripts

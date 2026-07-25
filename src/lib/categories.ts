@@ -1,17 +1,6 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  addDoc,
-  updateDoc,
-  deleteDoc,
-  query,
-  orderBy,
-} from "firebase/firestore/lite";
+import { ref, get, set, update, remove, push } from "firebase/database";
 import { db } from "./firebase";
 import type { Category } from "./types";
-
-const categoriesCol = collection(db, "categories");
 
 export const DEFAULT_CATEGORIES: Omit<Category, "id" | "createdAt">[] = [
   { slug: "acao", label: "Ação", icon: "sword", color: "#E5473C", custom: false },
@@ -30,14 +19,12 @@ function toCategory(id: string, data: Record<string, unknown>): Category {
 }
 
 export async function getAllCategories(): Promise<Category[]> {
-  const q = query(categoriesCol, orderBy("createdAt", "asc"));
-  const snap = await getDocs(q);
-  return snap.docs.map((d) => toCategory(d.id, d.data()));
-}
-
-export async function getCategoryBySlug(slug: string): Promise<Category | null> {
-  const all = await getAllCategories();
-  return all.find((c) => c.slug === slug) ?? null;
+  const snap = await get(ref(db, "categories"));
+  if (!snap.exists()) return [];
+  const data = snap.val() as Record<string, Record<string, unknown>>;
+  return Object.entries(data)
+    .map(([id, c]) => toCategory(id, c))
+    .sort((a, b) => a.createdAt - b.createdAt);
 }
 
 export async function seedDefaultCategories() {
@@ -45,21 +32,28 @@ export async function seedDefaultCategories() {
   const existingSlugs = new Set(existing.map((c) => c.slug));
   for (const c of DEFAULT_CATEGORIES) {
     if (existingSlugs.has(c.slug)) continue;
-    await addDoc(categoriesCol, { ...c, createdAt: Date.now() });
+    const newRef = push(ref(db, "categories"));
+    await set(newRef, { ...c, createdAt: Date.now() });
   }
+}
+
+export async function getCategoryBySlug(slug: string): Promise<Category | null> {
+  const all = await getAllCategories();
+  return all.find((c) => c.slug === slug) ?? null;
 }
 
 export async function createCategory(
   data: Omit<Category, "id" | "createdAt">
 ): Promise<string> {
-  const ref = await addDoc(categoriesCol, { ...data, createdAt: Date.now() });
-  return ref.id;
+  const newRef = push(ref(db, "categories"));
+  await set(newRef, { ...data, createdAt: Date.now() });
+  return newRef.key!;
 }
 
 export async function updateCategory(id: string, data: Partial<Omit<Category, "id">>) {
-  await updateDoc(doc(db, "categories", id), data);
+  await update(ref(db, `categories/${id}`), data);
 }
 
 export async function deleteCategory(id: string) {
-  await deleteDoc(doc(db, "categories", id));
+  await remove(ref(db, `categories/${id}`));
 }

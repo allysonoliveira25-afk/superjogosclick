@@ -1,22 +1,22 @@
-import { doc, getDoc, setDoc, deleteDoc, collection, getDocs } from "firebase/firestore/lite";
+import { ref, get, set, remove } from "firebase/database";
 import { db } from "./firebase";
 import type { FavoriteEntry } from "./types";
 
 function favRef(uid: string, gameId: string) {
-  return doc(db, "users", uid, "favorites", gameId);
+  return ref(db, `users/${uid}/favorites/${gameId}`);
 }
 
 export async function isFavorite(uid: string, gameId: string): Promise<boolean> {
-  const snap = await getDoc(favRef(uid, gameId));
+  const snap = await get(favRef(uid, gameId));
   return snap.exists();
 }
 
 export async function addFavorite(uid: string, gameId: string) {
-  await setDoc(favRef(uid, gameId), { gameId, addedAt: Date.now() });
+  await set(favRef(uid, gameId), { gameId, addedAt: Date.now() });
 }
 
 export async function removeFavorite(uid: string, gameId: string) {
-  await deleteDoc(favRef(uid, gameId));
+  await remove(favRef(uid, gameId));
 }
 
 export async function toggleFavorite(uid: string, gameId: string): Promise<boolean> {
@@ -30,8 +30,8 @@ export async function toggleFavorite(uid: string, gameId: string): Promise<boole
 }
 
 export async function getFavorites(uid: string): Promise<FavoriteEntry[]> {
-  const snap = await getDocs(collection(db, "users", uid, "favorites"));
-  return snap.docs
-    .map((d) => d.data() as FavoriteEntry)
-    .sort((a, b) => b.addedAt - a.addedAt);
+  const snap = await get(ref(db, `users/${uid}/favorites`));
+  if (!snap.exists()) return [];
+  const data = snap.val() as Record<string, FavoriteEntry>;
+  return Object.values(data).sort((a, b) => b.addedAt - a.addedAt);
 }
