@@ -31,7 +31,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   async function loadProfile(u: User) {
-    const p = await getUserProfile(u.uid);
+    let p = await getUserProfile(u.uid);
+    if (!p) {
+      // Auth account exists but has no Firestore profile yet (e.g. it was
+      // created outside the /cadastro flow). Back-fill one on the fly.
+      p = await createUserProfile(u.uid, u.displayName ?? "Jogador", u.email ?? "");
+    }
     setProfile(p);
   }
 
