@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore/lite";
 import { db } from "./firebase";
 import { DEFAULT_SITE_SETTINGS, type SiteSettings } from "./types";
 

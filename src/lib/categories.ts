@@ -7,7 +7,7 @@ import {
   deleteDoc,
   query,
   orderBy,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { db } from "./firebase";
 import type { Category } from "./types";
 

@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, deleteDoc, collection, getDocs } from "firebase/firestore";
+import { doc, getDoc, setDoc, deleteDoc, collection, getDocs } from "firebase/firestore/lite";
 import { db } from "./firebase";
 import type { FavoriteEntry } from "./types";
 

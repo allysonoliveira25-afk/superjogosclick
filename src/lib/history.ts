@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, collection, getDocs, increment, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, getDocs, increment, updateDoc } from "firebase/firestore/lite";
 import { db } from "./firebase";
 import { addPlaytime } from "./users";
 import { incrementPlays } from "./games";

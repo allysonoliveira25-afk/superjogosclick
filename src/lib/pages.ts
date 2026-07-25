@@ -10,7 +10,7 @@ import {
   where,
   orderBy,
   limit as fbLimit,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { db } from "./firebase";
 import type { CustomPage } from "./types";
 

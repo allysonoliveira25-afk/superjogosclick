@@ -6,7 +6,7 @@ import {
   collection,
   getDocs,
   increment,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { db } from "./firebase";
 import { DEFAULT_AVATAR, type UserProfile, type UserRole } from "./types";
 

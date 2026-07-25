@@ -7,7 +7,7 @@ export default async function CustomPageRoute({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const page = await getPageBySlug(slug);
+  const page = await getPageBySlug(slug).catch(() => null);
   if (!page) notFound();
 
   const paragraphs = page.content.split(/\n{2,}/).map((p) => p.trim()).filter(Boolean);

@@ -12,12 +12,12 @@ export default async function GamePage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const game = await getGameBySlug(slug);
+  const game = await getGameBySlug(slug).catch(() => null);
   if (!game) notFound();
 
   const [category, related] = await Promise.all([
-    getCategoryBySlug(game.category),
-    getGamesByCategory(game.category),
+    getCategoryBySlug(game.category).catch(() => null),
+    getGamesByCategory(game.category).catch(() => []),
   ]);
   const relatedGames = related.filter((g) => g.id !== game.id).slice(0, 12);
   const ratingLabel = AGE_RATINGS.find((r) => r.value === game.ageRating)?.label;

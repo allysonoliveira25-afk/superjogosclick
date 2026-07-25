@@ -10,7 +10,7 @@ import {
   where,
   limit as fbLimit,
   increment,
-} from "firebase/firestore";
+} from "firebase/firestore/lite";
 import { db } from "./firebase";
 import type { Game } from "./types";
 

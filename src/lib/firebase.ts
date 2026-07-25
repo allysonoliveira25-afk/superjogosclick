@@ -1,6 +1,12 @@
 import { initializeApp, getApps, getApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+// The "lite" Firestore SDK is REST-based (one-shot reads/writes only, no
+// onSnapshot). We only ever do one-shot reads in this app, and Cloudflare
+// Workers blocks the dynamic code generation the full SDK's realtime
+// WebChannel/gRPC-Web layer relies on ("EvalError: Code generation from
+// strings disallowed"), so the full "firebase/firestore" package crashes
+// every SSR request there. Lite avoids that entirely.
+import { getFirestore } from "firebase/firestore/lite";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {

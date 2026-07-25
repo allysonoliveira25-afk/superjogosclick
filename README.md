@@ -36,6 +36,31 @@ Plataforma de jogos online no estilo Poki/Friv, construída com **Next.js 16 (Ap
 7. Em `/admin/importar`, importe jogos em massa da GameMonetize ou GamePix — os feeds são
    públicos e não exigem cadastro/chave.
 
+## Deploy no Cloudflare Workers
+
+O projeto usa [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare) para rodar o
+Next.js (SSR completo, incluindo as rotas dinâmicas e a API de importação) como Cloudflare
+Worker — é o adaptador oficial recomendado pela Cloudflare para Next.js, equivalente ao
+`@astrojs/cloudflare` usado em projetos Astro.
+
+1. No dashboard da Cloudflare (Workers & Pages → seu projeto → Settings → Build):
+   - **Build command**: `npx opennextjs-cloudflare build`
+   - **Deploy command**: `npx wrangler deploy`
+2. Em Settings → Variables, adicione as mesmas variáveis do `.env.example`
+   (`NEXT_PUBLIC_FIREBASE_*`) como **variáveis de build** — o Next.js embute os valores
+   `NEXT_PUBLIC_*` no bundle durante o `next build`, então elas precisam estar disponíveis
+   nessa etapa, não só em runtime.
+3. Push para a branch conectada ao projeto — o Cloudflare builda e publica automaticamente.
+
+Para testar localmente antes de subir:
+
+```sh
+npm run preview   # builda com o adaptador e sobe num Worker local (wrangler dev)
+```
+
+> Se você viu o erro `Could not detect a directory containing static files`, era porque
+> faltava esse adaptador — sem ele, `wrangler deploy` não sabe como empacotar um app Next.js.
+
 ## Estrutura
 
 ```

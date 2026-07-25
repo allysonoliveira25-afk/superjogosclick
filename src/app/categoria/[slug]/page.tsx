@@ -10,10 +10,10 @@ export default async function CategoryPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const category = await getCategoryBySlug(slug);
+  const category = await getCategoryBySlug(slug).catch(() => null);
   if (!category) notFound();
 
-  const games = await getGamesByCategory(slug);
+  const games = await getGamesByCategory(slug).catch(() => []);
 
   return (
     <div className="mx-auto max-w-[1400px] px-3 py-5 sm:px-5">
